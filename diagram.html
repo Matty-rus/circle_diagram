@@ -1,0 +1,59 @@
+<html>
+<head>
+<script>
+function everything() {
+array = counting(document.getElementById('textfield').value)
+sortedIndexes = Object.keys(array)
+c = document.getElementById("graph");
+ctx = c.getContext("2d");
+ctx.clearRect(0, 0, c.width, c.height)
+// Тут рисуем круг
+ctx.beginPath();
+ctx.lineWidth = 3;
+ctx.arc (202, 240, 200, 0, Math.PI * 2, false);
+ctx.moveTo(202, 240);
+ctx.lineTo(402, 240);
+ctx.stroke();
+textLength = 0
+for(key in array)
+textLength += array[key]
+for(key in array) {
+array[key] = array[key]/textLength*2*Math.PI
+}
+currentAngle = 0
+for(key in array) {
+currentAngle += array[key]
+ctx.beginPath()
+ctx.moveTo(202, 240)
+ctx.lineTo(202+200*Math.cos(currentAngle), 240+200*Math.sin(currentAngle))
+ctx.stroke()
+// Тут рисуем сегменты
+
+// Буквы
+c.textAlign = "center";
+ctx.textBaseline = "middle";
+ctx.fillText(key, (currentAngle-array[key])+array[key]/2, 20);
+}
+}
+function counting(a) {
+b=[]
+for(i=0;i<a.length;++i){
+big=a[i].toUpperCase()
+if(big.charCodeAt(0) >= 65 && big.charCodeAt(0) <= 90) {
+if(big in b) b[big]++
+else b[big]=1
+}
+b.sort()
+}
+return b
+}
+</script>
+<title>MY USEFUL PAGE</title>
+</head>
+<body>
+<input type='text' id='textfield'>
+<input type='button' value='Plot' onclick='everything()'>
+<br>
+<canvas id='graph' width='1200' height='500'></canvas>
+</body>
+</html>
